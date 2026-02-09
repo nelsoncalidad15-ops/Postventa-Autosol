@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Autosol | Dashboard</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons + Chart.js -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+
+  <style>
+    :root{
+      --bg:#0B1220;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.08);
+      --card:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.10);
+
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --muted2:rgba(255,255,255,.45);
+
+      --brand:#2F6BFF;
+      --ok:#19C37D;
+      --warn:#F5A524;
+      --bad:#F24E5C;
+
+      --shadow:0 18px 70px rgba(0,0,0,.40);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(47,107,255,.30), transparent 60%),
+        radial-gradient(700px 450px at 95% 20%, rgba(25,195,125,.18), transparent 60%),
+        radial-gradient(900px 550px at 40% 110%, rgba(242,78,92,.15), transparent 60%),
+        var(--bg);
+      overflow:hidden;
+    }
+
+    .app{display:flex;height:100vh; width:100vw;}
+    .sidebar{
+      width:290px; padding:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      border-right:1px solid var(--stroke);
+      backdrop-filter: blur(10px);
+      display:flex; flex-direction:column; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 14px; border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06); border-radius:16px;
+      box-shadow:var(--shadow);
+    }
+    .brandL{display:flex; gap:10px; align-items:center;}
+    .logoDot{
+      width:38px; height:38px; border-radius:12px;
+      background:linear-gradient(135deg, var(--brand), rgba(47,107,255,.35));
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid rgba(255,255,255,.15);
+    }
+    .brandTitle{font-weight:900; letter-spacing:.2px;}
+    .brandSub{font-size:.78rem; color:var(--muted);}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      font-size:.82rem; color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .nav{display:flex; flex-direction:column; gap:8px;}
+    .navBtn{
+      display:flex; align-items:center; gap:12px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      cursor:pointer;
+      transition:.18s ease;
+      font-weight:800;
+    }
+    .navBtn i{width:18px; text-align:center; color:rgba(255,255,255,.80);}
+    .navBtn:hover{transform:translateY(-1px); background:rgba(255,255,255,.08);}
+    .navBtn.active{
+      background:linear-gradient(135deg, rgba(47,107,255,.35), rgba(255,255,255,.06));
+      border-color:rgba(47,107,255,.35);
+      box-shadow:0 12px 45px rgba(47,107,255,.18);
+    }
+
+    .sideActions{display:flex; gap:10px; margin-top:4px; flex-wrap:wrap;}
+    .btn{
+      border:none; cursor:pointer;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      display:inline-flex; align-items:center; gap:8px;
+      color:var(--text);
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.09);}
+    .btnPrimary{
+      background:linear-gradient(135deg, rgba(47,107,255,.95), rgba(47,107,255,.35));
+      border-color:rgba(47,107,255,.35);
+    }
+    .btnDanger{
+      background:linear-gradient(135deg, rgba(242,78,92,.95), rgba(242,78,92,.25));
+      border-color:rgba(242,78,92,.35);
+    }
+
+    .foot{
+      margin-top:auto;
+      padding:12px 12px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.05);
+      border-radius:16px;
+      color:var(--muted);
+      font-size:.82rem;
+    }
+    .foot b{color:var(--text)}
+    .footRow{display:flex; justify-content:space-between; gap:10px; margin-top:6px;}
+    .dot{width:10px;height:10px;border-radius:999px; background:var(--muted2); display:inline-block; margin-right:8px;}
+    .dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
+
+    .main{
+      flex:1; overflow:auto;
+      padding:22px 22px 40px;
+    }
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      padding:14px 0 16px;
+      backdrop-filter: blur(10px);
+    }
+    .topbarInner{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+      padding:14px 16px;
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      background:rgba(0,0,0,.18);
+      box-shadow:var(--shadow);
+    }
+    .titleWrap{display:flex; flex-direction:column; gap:4px;}
+    .pageTitle{font-size:1.18rem; font-weight:950; letter-spacing:.2px;}
+    .pageHint{font-size:.86rem; color:var(--muted);}
+    .metaWrap{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      font-size:.84rem;
+      color:var(--muted);
+    }
+
+    .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;}
+    .card{
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .kTitle{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:900;}
+    .kVal{margin-top:10px; font-size:1.7rem; font-weight:950;}
+    .kSub{margin-top:6px; font-size:.88rem; color:var(--muted); font-weight:800;}
+    .statusPill{
+      margin-top:10px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--stroke);
+      font-size:.78rem; font-weight:950;
+      background:rgba(255,255,255,.06);
+    }
+    .statusPill.ok{border-color:rgba(25,195,125,.35); color:rgba(255,255,255,.92)}
+    .statusPill.warn{border-color:rgba(245,165,36,.35)}
+    .statusPill.bad{border-color:rgba(242,78,92,.35)}
+
+    .section{
+      margin-top:14px;
+      display:grid; grid-template-columns:1.2fr .8fr; gap:14px;
+    }
+    .panel{
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .panelHead{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      margin-bottom:10px;
+    }
+    .panelHead h3{
+      margin:0;
+      font-size:1rem;
+      font-weight:950;
+      letter-spacing:.2px;
+    }
+    .panelHead .small{font-size:.82rem; color:var(--muted); font-weight:800;}
+    .filters{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    .fItem{display:flex; flex-direction:column; gap:6px;}
+    .fItem label{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:950;}
+    select{
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      outline:none;
+      font-weight:800;
+    }
+    select[multiple]{height:112px}
+    option{background:#0B1220; color:var(--text);}
+
+    .chartBox{height:360px;}
+    canvas{width:100% !important; height:100% !important;}
+
+    .stack{display:flex; flex-direction:column; gap:14px;}
+    .miniRow{display:flex; justify-content:space-between; gap:10px; align-items:center;}
+    .miniRow b{font-weight:950}
+    .barTrack{
+      height:12px; border-radius:999px; overflow:hidden;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      position:relative;
+      margin-top:8px;
+    }
+    .barTime{position:absolute; left:0; top:0; bottom:0; width:0%; background:rgba(255,255,255,.20);}
+    .barVal{position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, rgba(47,107,255,.95), rgba(47,107,255,.35));}
+
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0 8px;
+      margin-top:10px;
+    }
+    .table th{
+      text-align:left;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      padding:0 8px 6px;
+    }
+    .table td{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      padding:10px 10px;
+      border-left:none; border-right:none;
+      font-weight:800;
+      color:rgba(255,255,255,.90);
+    }
+    .table tr td:first-child{border-top-left-radius:14px;border-bottom-left-radius:14px;border-left:1px solid rgba(255,255,255,.10)}
+    .table tr td:last-child{border-top-right-radius:14px;border-bottom-right-radius:14px;border-right:1px solid rgba(255,255,255,.10)}
+    .muted{color:var(--muted)}
+    .right{text-align:right}
+
+    .view{display:none;}
+    .view.active{display:block;}
+
+    @media (max-width:1200px){
+      .section{grid-template-columns:1fr; }
+      .filters{grid-template-columns:repeat(2,1fr)}
+      .grid4{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:680px){
+      body{overflow:auto}
+      .app{flex-direction:column}
+      .sidebar{width:100%; position:sticky; top:0; z-index:20}
+      .main{padding:14px}
+      .grid4{grid-template-columns:1fr}
+      .filters{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brandL">
+          <div class="logoDot"><i class="fa-solid fa-v" style="color:white"></i></div>
+          <div>
+            <div class="brandTitle">Autosol <span style="color:var(--brand)">Dashboard</span></div>
+            <div class="brandSub">Google Sheets · Live CSV</div>
+          </div>
+        </div>
+        <span class="pill" id="envPill"><i class="fa-solid fa-globe"></i> Web</span>
+      </div>
+
+      <div class="nav">
+        <button class="navBtn active" data-view="fac"><i class="fa-solid fa-chart-line"></i> Avance Facturación</button>
+        <button class="navBtn" data-view="ppt"><i class="fa-solid fa-screwdriver-wrench"></i> PPT & Eficiencia</button>
+        <button class="navBtn" data-view="plan"><i class="fa-solid fa-bullseye"></i> Plan Negocio 2026</button>
+      </div>
+
+      <div class="sideActions">
+        <button class="btn btnPrimary" id="btnSync"><i class="fa-solid fa-rotate"></i> Sincronizar</button>
+        <button class="btn btnDanger" id="btnClear"><i class="fa-solid fa-trash"></i> Borrar caché</button>
+      </div>
+
+      <div class="foot">
+        <div><b>Estado</b></div>
+        <div class="footRow"><span><span class="dot" id="dotState"></span><span id="stateText">Sin datos</span></span><span id="rowsText">—</span></div>
+        <div class="footRow"><span class="muted">Última sync</span><span id="syncText">—</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="topbarInner">
+          <div class="titleWrap">
+            <div class="pageTitle" id="pageTitle">Avance Facturación</div>
+            <div class="pageHint" id="pageHint">KPIs + ritmo vs tiempo + tendencia por sucursal.</div>
+          </div>
+          <div class="metaWrap">
+            <div class="badge" id="badgeRange"><i class="fa-solid fa-filter"></i> <span>Filtros: —</span></div>
+            <div class="badge" id="badgeNow"><i class="fa-solid fa-clock"></i> <span id="nowText">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: FACTURACIÓN -->
+      <section class="view active" id="view-fac">
+        <div class="grid4">
+          <div class="card">
+            <div class="kTitle">Facturación Real</div>
+            <div class="kVal" id="facReal">$0 M</div>
+            <div class="kSub muted" id="facRealSub">Suma AVANCE A FECHA</div>
+          </div>
+
+          <div class="card">
+            <div class="kTitle">Objetivo Mensual</div>
+            <div class="kVal" id="facObj">$0 M</div>
+            <div class="kSub muted">Suma OBJETIVO MENSUAL</div>
+          </div>
+
+          <div class="card">
+            <div class="kTitle">Desvío a la Fecha</div>
+            <div class="kVal" id="facDesv">$0 M</div>
+            <div class="kSub" id="facDesvSub">—</div>
+          </div>
+
+          <div class="card" id="facSemCard">
+            <div class="kTitle">Cumplimiento (%)</div>
+            <div class="kVal" id="facPct">0.0%</div>
+            <div class="statusPill" id="facSemPill"><i class="fa-solid fa-circle-minus"></i> —</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panelHead">
+            <h3><i class="fa-solid fa-gauge-high" style="color:var(--brand)"></i> Ritmo del mes</h3>
+            <div class="small" id="facPacingText">Tiempo 0% · Avance 0%</div>
+          </div>
+          <div class="barTrack">
+            <div class="barTime" id="facBarTime"></div>
+            <div class="barVal" id="facBarVal"></div>
+          </div>
+          <div class="small muted" style="margin-top:8px">Gris: % días transcurridos · Azul: % cumplimiento</div>
+
+          <div class="filters">
+            <div class="fItem"><label>Año</label><select id="facYear"></select></div>
+            <div class="fItem"><label>Área</label><select id="facArea" multiple></select></div>
+            <div class="fItem"><label>Sucursal</label><select id="facSuc" multiple></select></div>
+            <div class="fItem"><label>Mes</label><select id="facMes" multiple></select></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="panel">
+            <div class="panelHead">
+              <h3><i class="fa-solid fa-chart-area" style="color:var(--brand)"></i> Tendencia Avance a Fecha</h3>
+              <div class="small muted">Línea por sucursal (meses seleccionados)</div>
+            </div>
+            <div class="chartBox"><canvas id="chartFacTrend"></canvas></div>
+          </div>
+
+          <div class="panel">
+            <div class="panelHead">
+              <h3><i class="fa-solid fa-chart-pie" style="color:var(--brand)"></i> Distribución por Sucursal</h3>
+              <div class="small muted">AVANCE A FECHA (sum)</div>
+            </div>
+            <div class="chartBox" style="height:320px"><canvas id="chartFacShare"></canvas></div>
+
+            <table class="table" id="facTable">
+              <thead>
+                <tr>
+                  <th>Sucursal</th>
+                  <th class="right">Real</th>
+                  <th class="right">Obj</th>
+                  <th class="right">%Cumpl.</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: PPT -->
+      <section class="view" id="view-ppt">
+        <div class="grid4">
+          <div class="card">
+            <div class="kTitle">Avance PPT</div>
+            <div class="kVal" id="pptTotal">0</div>
+            <div class="kSub muted">Suma Avance PPT</div>
+          </div>
+          <div class="card">
+            <div class="kTitle">PPT diarios</div>
+            <div class="kVal" id="pptDaily">0.0</div>
+            <div class="kSub muted">Promedio PPT DIARIOS</div>
+          </div>
+          <div class="card">
+            <div class="kTitle">Servicios diarios</div>
+            <div class="kVal" id="srvDaily">0.0</div>
+            <div class="kSub muted">Promedio servis DIARIOS</div>
+          </div>
+          <div class="card" id="pptSemCard">
+            <div class="kTitle">Eficiencia Servis vs PPT</div>
+            <div class="kVal" id="effPct">0.0%</div>
+            <div class="statusPill" id="pptSemPill"><i class="fa-solid fa-circle-minus"></i> —</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panelHead">
+            <h3><i class="fa-solid fa-filter" style="color:var(--brand)"></i> Filtros</h3>
+            <div class="small muted">Datos por mes/sucursal</div>
+          </div>
+          <div class="filters">
+            <div class="fItem"><label>Año</label><select id="pptYear"></select></div>
+            <div class="fItem"><label>Sucursal</label><select id="pptSuc" multiple></select></div>
+            <div class="fItem"><label>Mes</label><select id="pptMes" multiple></select></div>
+            <div class="fItem"><label>—</label><select disabled><option>Automático</option></select></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="panel">
+            <div class="panelHead">
+              <h3><i class="fa-solid fa-chart-line" style="color:var(--brand)"></i> Avance PPT vs Avance Servis</h3>
+              <div class="small muted">Comparación por mes (sum)</div>
+            </div>
+            <div class="chartBox"><canvas id="chartPptBars"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panelHead">
+              <h3><i class="fa-solid fa-chart-area" style="color:var(--brand)"></i> % Servis Vs PPT</h3>
+              <div class="small muted">Promedio por mes (según filtro)</div>
+            </div>
+            <div class="chartBox"><canvas id="chartEffLine"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: PLAN -->
+      <section class="view" id="view-plan">
+        <div class="panel">
+          <div class="panelHead">
+            <h3><i class="fa-solid fa-bullseye" style="color:var(--brand)"></i> Plan Negocio 2026</h3>
+            <div class="small muted">Selector KPI + sucursal + meses</div>
+          </div>
+          <div class="filters">
+            <div class="fItem"><label>Sucursal</label><select id="planSuc"></select></div>
+            <div class="fItem"><label>KPI</label><select id="planKpi"></select></div>
+            <div class="fItem"><label>Mes</label><select id="planMes" multiple></select></div>
+            <div class="fItem"><label>—</label><select disabled><option>Automático</option></select></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="panel">
+            <div class="panelHead">
+              <h3><i class="fa-solid fa-chart-column" style="color:var(--brand)"></i> KPI Seleccionado</h3>
+              <div class="small muted">Valores por mes</div>
+            </div>
+            <div class="chartBox"><canvas id="chartPlanKpi"></canvas></div>
+          </div>
+
+          <div class="panel">
+            <div class="panelHead">
+              <h3><i class="fa-solid fa-ranking-star" style="color:var(--brand)"></i> Top KPIs del mes</h3>
+              <div class="small muted">Ranking (solo informativo)</div>
+            </div>
+            <table class="table" id="planTopTable">
+              <thead>
+                <tr>
+                  <th>KPI</th>
+                  <th class="right">Valor</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div class="small muted" style="margin-top:8px">Nota: Ranking simple por valor numérico del mes elegido.</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+<script>
+/* =======================
+   CONFIG (tus 3 CSV)
+   ======================= */
+const CONFIG = {
+  FAC_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxUrEIVysJ9HgBXHOJnZ_MGPL2Huqw1b4h1zQB-SugNLB2TzTmx7CnQrPIAKKnHA/pub?gid=609635821&single=true&output=csv",
+  PPT_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxUrEIVysJ9HgBXHOJnZ_MGPL2Huqw1b4h1zQB-SugNLB2TzTmx7CnQrPIAKKnHA/pub?gid=1177925024&single=true&output=csv",
+  PLAN_CSV:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTxUrEIVysJ9HgBXHOJnZ_MGPL2Huqw1b4h1zQB-SugNLB2TzTmx7CnQrPIAKKnHA/pub?gid=2103759067&single=true&output=csv",
+  CACHE_KEY:"autosol_dash_csv_v1",
+  EFF_TARGET: 60,            // eficiencia objetivo (%)
+  FAC_OK: 95,                // semáforo facturación OK
+  FAC_WARN: 90               // semáforo facturación alerta
+};
+
+/* =======================
+   State
+   ======================= */
+const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+let dbFac=[], dbPPT=[], dbPlan=[];
+const charts = {};
+
+/* =======================
+   Helpers DOM
+   ======================= */
+const $ = (id)=>document.getElementById(id);
+const nowTick = ()=> {
+  $("nowText").textContent = new Date().toLocaleString("es-AR");
+  setTimeout(nowTick, 1000*10);
+};
+
+/* =======================
+   CSV parser (simple + robusto)
+   ======================= */
+function parseCSV(text){
+  const rows = [];
+  let cur = "", inQ=false, row=[];
+  for(let i=0;i<text.length;i++){
+    const ch = text[i];
+    const next = text[i+1];
+    if(ch === '"' && inQ && next === '"'){ cur += '"'; i++; continue; }
+    if(ch === '"'){ inQ = !inQ; continue; }
+    if(ch === ',' && !inQ){ row.push(cur); cur=""; continue; }
+    if((ch === '\n' || ch === '\r') && !inQ){
+      if(cur!=="" || row.length){ row.push(cur); cur=""; rows.push(row); row=[]; }
+      continue;
+    }
+    cur += ch;
+  }
+  if(cur!=="" || row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r => r.some(c => (c||"").trim() !== ""));
+}
+
+function toObjects(csvText){
+  const rows = parseCSV(csvText);
+  if(!rows.length) return [];
+  const headers = rows[0].map(h => (h||"").trim());
+  return rows.slice(1).map(r=>{
+    const o={};
+    headers.forEach((h,idx)=> o[h]= (r[idx] ?? "").trim());
+    return o;
+  });
+}
+
+/* =======================
+   Normalize
+   ======================= */
+function cleanMonthName(raw){
+  if(raw==null) return "";
+  const s = raw.toString().toUpperCase();
+  if (s.includes("ENE")) return "Enero";
+  if (s.includes("FEB")) return "Febrero";
+  if (s.includes("MAR")) return "Marzo";
+  if (s.includes("ABR")) return "Abril";
+  if (s.includes("MAY")) return "Mayo";
+  if (s.includes("JUN")) return "Junio";
+  if (s.includes("JUL")) return "Julio";
+  if (s.includes("AGO")) return "Agosto";
+  if (s.includes("SEP")) return "Septiembre";
+  if (s.includes("OCT")) return "Octubre";
+  if (s.includes("NOV")) return "Noviembre";
+  if (s.includes("DIC")) return "Diciembre";
+  // si viene como número 1..12
+  const n = Number(raw);
+  if(!Number.isNaN(n) && n>=1 && n<=12) return MONTHS[n-1];
+  return raw.toString().trim();
+}
+
+function U(s){ return (s||"").toString().trim().toUpperCase(); }
+
+function normalizeDb(db){
+  return db.map(r=>{
+    const o={};
+    Object.keys(r).forEach(k=>{
+      const kk = U(k);
+      let v = r[k];
+      if(kk === "MES" || kk.includes("MES")) v = cleanMonthName(v);
+      // normalizar sucursal "Suc." -> "SUC."
+      o[kk] = v;
+    });
+    return o;
+  });
+}
+
+function num(v){
+  if(v==null || v==="") return 0;
+  if(typeof v === "number") return v;
+  let s = v.toString().replace(/[$\s]/g,"");
+  if(s.includes(",") && s.includes(".")) s = s.replace(/\./g,"").replace(",",".");
+  else if(s.includes(",")) s = s.replace(",",".");
+  return parseFloat(s) || 0;
+}
+
+function fmtM(v){
+  return "$" + (v/1_000_000).toLocaleString("es-AR",{maximumFractionDigits:1}) + " M";
+}
+
+function uniq(arr){ return [...new Set(arr)].filter(x=>x!=null && x!==""); }
+function monthSort(arr){
+  return arr.slice().sort((a,b)=> MONTHS.indexOf(cleanMonthName(a)) - MONTHS.indexOf(cleanMonthName(b)));
+}
+
+function fillSelect(id, arr, all=false){
+  const s=$(id); s.innerHTML="";
+  arr.forEach(x=>{
+    const opt=document.createElement("option");
+    opt.value=x; opt.textContent=x;
+    if(all) opt.selected=true;
+    s.appendChild(opt);
+  });
+}
+
+function vals(id){
+  return Array.from($(id).selectedOptions).map(o=>o.value);
+}
+
+function setSem(pill, card, state){
+  // state: "ok" | "warn" | "bad"
+  pill.className = "statusPill " + state;
+  card.style.borderColor = state==="ok" ? "rgba(25,195,125,.35)" : state==="warn" ? "rgba(245,165,36,.35)" : "rgba(242,78,92,.35)";
+  card.style.boxShadow = state==="ok" ? "0 14px 55px rgba(25,195,125,.10)" : state==="warn" ? "0 14px 55px rgba(245,165,36,.10)" : "0 14px 55px rgba(242,78,92,.12)";
+}
+
+function setBadgeRange(txt){
+  $("badgeRange").innerHTML = `<i class="fa-solid fa-filter"></i> <span>Filtros: ${txt}</span>`;
+}
+
+/* =======================
+   Charts
+   ======================= */
+function destroyChart(key){
+  if(charts[key]){ charts[key].destroy(); delete charts[key]; }
+}
+
+// No seteamos colores manuales en exceso, pero acá sí conviene una paleta fija de marca.
+const PAL = ["#2F6BFF","#19C37D","#F5A524","#F24E5C","#8950FC","#EAB308","#22C55E","#60A5FA","#FB7185"];
+
+function makeLineChart(key, canvasId, labels, datasets, yFmt){
+  destroyChart(key);
+  const ctx = $(canvasId).getContext("2d");
+  charts[key] = new Chart(ctx, {
+    type:"line",
+    data:{ labels, datasets },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{weight:"800"} } },
+        tooltip:{ enabled:true }
+      },
+      scales:{
+        x:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700"} }, grid:{ color:"rgba(255,255,255,.06)" } },
+        y:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700)", callback: yFmt || (v=>v) }, grid:{ color:"rgba(255,255,255,.06)" } }
+      }
+    }
+  });
+}
+
+function makeBarChart(key, canvasId, labels, datasets, yFmt){
+  destroyChart(key);
+  const ctx = $(canvasId).getContext("2d");
+  charts[key] = new Chart(ctx, {
+    type:"bar",
+    data:{ labels, datasets },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{weight:"800"} } }
+      },
+      scales:{
+        x:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700"} }, grid:{ color:"rgba(255,255,255,.06)" } },
+        y:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700}", callback: yFmt || (v=>v) }, grid:{ color:"rgba(255,255,255,.06)" } }
+      }
+    }
+  });
+}
+
+function makeDoughnut(key, canvasId, labels, data){
+  destroyChart(key);
+  const ctx=$(canvasId).getContext("2d");
+  charts[key]=new Chart(ctx,{
+    type:"doughnut",
+    data:{ labels, datasets:[{ data, backgroundColor: labels.map((_,i)=>PAL[i%PAL.length]), borderWidth:0 }]},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:"bottom", labels:{ color:"rgba(255,255,255,.70)", font:{weight:"800"} } }
+      }
+    }
+  });
+}
+
+/* =======================
+   Load / Cache / Sync
+   ======================= */
+async function fetchCsv(url){
+  const res = await fetch(url, { cache:"no-store" });
+  if(!res.ok) throw new Error("No se pudo leer CSV");
+  return await res.text();
+}
+
+function saveCache(){
+  try{
+    localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify({
+      dbFac, dbPPT, dbPlan,
+      lastSync: new Date().toISOString()
+    }));
+  }catch(e){}
+}
+
+function loadCache(){
+  try{
+    const raw = localStorage.getItem(CONFIG.CACHE_KEY);
+    if(!raw) return false;
+    const obj = JSON.parse(raw);
+    dbFac = obj.dbFac || [];
+    dbPPT = obj.dbPPT || [];
+    dbPlan= obj.dbPlan|| [];
+    setState(true, obj.lastSync, dbFac.length + dbPPT.length + dbPlan.length);
+    initAll();
+    return (dbFac.length||dbPPT.length||dbPlan.length);
+  }catch(e){
+    return false;
+  }
+}
+
+function clearCache(){
+  localStorage.removeItem(CONFIG.CACHE_KEY);
+  location.reload();
+}
+
+function setState(ok, iso, rows){
+  $("dotState").className = "dot " + (ok ? "ok" : "bad");
+  $("stateText").textContent = ok ? "Datos cargados" : "Sin datos";
+  $("rowsText").textContent = rows ? `${rows.toLocaleString("es-AR")} filas` : "—";
+  $("syncText").textContent = iso ? new Date(iso).toLocaleString("es-AR") : "—";
+}
+
+async function syncAll(){
+  try{
+    $("dotState").className="dot warn";
+    $("stateText").textContent="Sincronizando…";
+
+    const [facTxt, pptTxt, planTxt] = await Promise.all([
+      fetchCsv(CONFIG.FAC_CSV),
+      fetchCsv(CONFIG.PPT_CSV),
+      fetchCsv(CONFIG.PLAN_CSV)
+    ]);
+
+    dbFac = normalizeDb(toObjects(facTxt));
+    dbPPT = normalizeDb(toObjects(pptTxt));
+    dbPlan= normalizeDb(toObjects(planTxt));
+
+    saveCache();
+    setState(true, new Date().toISOString(), dbFac.length + dbPPT.length + dbPlan.length);
+    initAll(true);
+  }catch(e){
+    setState(false, null, 0);
+    alert("No pude sincronizar. Revisá que el Sheet siga publicado y que los links CSV sean accesibles.");
+    console.error(e);
+  }
+}
+
+/* =======================
+   Init filters + views
+   ======================= */
+function initAll(force=false){
+  initFacFilters();
+  initPptFilters();
+  initPlanFilters();
+  upFac();
+  upPPT();
+  upPlan();
+}
+
+function initFacFilters(){
+  if(!dbFac.length) return;
+
+  const years = uniq(dbFac.map(r=>r["AÑO"])).sort().reverse();
+  const areas = uniq(dbFac.map(r=> (r["AREA"]||"").toString().replace(/FACTURACIÓN/ig,"").trim())).sort();
+  const sucs  = uniq(dbFac.map(r=>r["SUCURSAL"])).sort();
+  const meses = monthSort(uniq(dbFac.map(r=>cleanMonthName(r["MES"]))));
+
+  fillSelect("facYear", years);
+  fillSelect("facArea", areas, true);
+  fillSelect("facSuc", sucs, true);
+  fillSelect("facMes", meses, true);
+}
+
+function initPptFilters(){
+  if(!dbPPT.length) return;
+
+  const years = uniq(dbPPT.map(r=> r["AÑO"] || r["Q-AÑO"] )).sort().reverse();
+  const sucs  = uniq(dbPPT.map(r=> r["SUC."] || r["SUCURSAL"] || r["SUC"] )).sort();
+  const meses = monthSort(uniq(dbPPT.map(r=>cleanMonthName(r["MES"]))));
+
+  fillSelect("pptYear", years);
+  fillSelect("pptSuc", sucs, true);
+  fillSelect("pptMes", meses, true);
+}
+
+function initPlanFilters(){
+  if(!dbPlan.length) return;
+
+  const sucs = uniq(dbPlan.map(r=>r["SUCURSAL"])).sort();
+  const meses = monthSort(uniq(dbPlan.map(r=>cleanMonthName(r["MES"]))));
+
+  // KPI keys: todo menos Sucursal/Mes
+  const sample = dbPlan[0] || {};
+  const kpis = Object.keys(sample).filter(k => !["SUCURSAL","MES","AÑO"].includes(U(k)));
+
+  fillSelect("planSuc", sucs);
+  fillSelect("planKpi", kpis);
+  fillSelect("planMes", meses, true);
+}
+
+/* =======================
+   Update FACTURACIÓN
+   ======================= */
+function upFac(){
+  if(!dbFac.length) return;
+
+  const y = $("facYear").value;
+  let areas = vals("facArea");
+  let sucs  = vals("facSuc");
+  let meses = vals("facMes");
+
+  // si el usuario dejó vacío, asumimos todo
+  if(!areas.length) areas = uniq(dbFac.map(r=> (r["AREA"]||"").toString().replace(/FACTURACIÓN/ig,"").trim()));
+  if(!sucs.length)  sucs  = uniq(dbFac.map(r=>r["SUCURSAL"]));
+  if(!meses.length) meses = uniq(dbFac.map(r=>cleanMonthName(r["MES"])));
+
+  const data = dbFac.filter(r =>
+    (r["AÑO"]==y) &&
+    meses.includes(cleanMonthName(r["MES"])) &&
+    sucs.includes(r["SUCURSAL"]) &&
+    areas.some(a => (r["AREA"]||"").toString().toUpperCase().includes(a.toUpperCase()))
+  );
+
+  const real = data.reduce((a,r)=>a+num(r["AVANCE A FECHA"]),0);
+  const obj  = data.reduce((a,r)=>a+num(r["OBJETIVO MENSUAL"]),0);
+  const desv = data.reduce((a,r)=>a+num(r["DESVIO A FECHA"]),0);
+
+  // % cumplimiento ponderado por objetivo (más justo)
+  let wSum=0, w=0;
+  data.forEach(r=>{
+    const o=num(r["OBJETIVO MENSUAL"]);
+    const p=num(r["CUMPLIMIENTO A LA FECHA (%)"]);
+    if(o>0){ wSum += p*o; w += o; }
+  });
+  let pct = w>0 ? (wSum/w) : 0;
+  if(pct>0 && pct<2) pct*=100;
+
+  $("facReal").textContent = fmtM(real);
+  $("facObj").textContent  = fmtM(obj);
+  $("facDesv").textContent = fmtM(desv);
+  $("facDesvSub").textContent = desv>=0 ? "Mejor que el objetivo a la fecha" : "Por debajo del objetivo a la fecha";
+  $("facPct").textContent  = pct.toFixed(1) + "%";
+
+  // Semáforo
+  const pill=$("facSemPill"), card=$("facSemCard");
+  if(pct>=CONFIG.FAC_OK){
+    pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> Objetivo`;
+    setSem(pill, card, "ok");
+  } else if(pct>=CONFIG.FAC_WARN){
+    pill.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Alerta`;
+    setSem(pill, card, "warn");
+  } else {
+    pill.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Crítico`;
+    setSem(pill, card, "bad");
+  }
+
+  // Pacing tiempo vs avance (si el mes actual está dentro del filtro)
+  const today=new Date();
+  const thisYear = today.getFullYear().toString();
+  const thisMonth = cleanMonthName(today.toLocaleString("es-ES",{month:"long"}));
+  let timePct = 0;
+  if(y===thisYear && meses.includes(thisMonth)){
+    const daysInMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+    timePct = (today.getDate()/daysInMonth)*100;
+  } else if(Number(y)<today.getFullYear()){
+    timePct = 100;
+  }
+  $("facBarTime").style.width = timePct.toFixed(1)+"%";
+  $("facBarVal").style.width  = Math.min(pct,100).toFixed(1)+"%";
+  $("facPacingText").textContent = `Tiempo ${timePct.toFixed(0)}% · Avance ${pct.toFixed(0)}%`;
+
+  // Charts: tendencia por sucursal (líneas) y share (donut)
+  const xMonths = monthSort(uniq(meses.map(cleanMonthName)));
+  const bySuc = sucs.slice();
+
+  const datasets = bySuc.map((s,i)=>{
+    const serie = xMonths.map(m=>{
+      return data
+        .filter(r=> r["SUCURSAL"]===s && cleanMonthName(r["MES"])===cleanMonthName(m))
+        .reduce((a,r)=>a+num(r["AVANCE A FECHA"]),0);
+    });
+    return {
+      label: s,
+      data: serie,
+      borderColor: PAL[i%PAL.length],
+      backgroundColor: "transparent",
+      tension:.35,
+      borderWidth:3,
+      pointRadius:2
+    };
+  });
+
+  makeLineChart("facTrend","chartFacTrend", xMonths, datasets, v=>"$"+(v/1_000_000).toFixed(1)+"M");
+
+  // Share
+  const shareLabels = bySuc;
+  const shareData = bySuc.map(s => data.filter(r=>r["SUCURSAL"]===s).reduce((a,r)=>a+num(r["AVANCE A FECHA"]),0));
+  makeDoughnut("facShare","chartFacShare", shareLabels, shareData);
+
+  // Tabla sucursal
+  const tbody = $("facTable").querySelector("tbody");
+  tbody.innerHTML = "";
+  bySuc.forEach(s=>{
+    const rS = data.filter(r=>r["SUCURSAL"]===s);
+    const realS = rS.reduce((a,r)=>a+num(r["AVANCE A FECHA"]),0);
+    const objS  = rS.reduce((a,r)=>a+num(r["OBJETIVO MENSUAL"]),0);
+    let pctS = objS>0 ? (realS/objS)*100 : 0;
+
+    const tr=document.createElement("tr");
+    tr.innerHTML = `
+      <td>${s}</td>
+      <td class="right">${fmtM(realS)}</td>
+      <td class="right">${fmtM(objS)}</td>
+      <td class="right">${pctS.toFixed(1)}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  setBadgeRange(`Facturación · Año ${y} · Meses ${meses.length} · Sucs ${sucs.length}`);
+}
+
+/* =======================
+   Update PPT
+   ======================= */
+function upPPT(){
+  if(!dbPPT.length) return;
+
+  const y = $("pptYear").value;
+  let sucs = vals("pptSuc");
+  let meses = vals("pptMes");
+  if(!sucs.length) sucs = uniq(dbPPT.map(r=> r["SUC."] || r["SUCURSAL"] || r["SUC"] ));
+  if(!meses.length) meses = uniq(dbPPT.map(r=>cleanMonthName(r["MES"])));
+
+  const kSuc = "SUC.";
+  const data = dbPPT.filter(r =>
+    ((r["AÑO"]==y) || (r["Q-AÑO"]==y)) &&
+    meses.includes(cleanMonthName(r["MES"])) &&
+    sucs.includes(r[kSuc] || r["SUCURSAL"] || r["SUC"])
+  );
+
+  const totalPPT = data.reduce((a,r)=>a+num(r["AVANCE PPT"]),0);
+  const totalSrv = data.reduce((a,r)=>a+num(r["AVANCE SERVIS"]),0);
+
+  const avgPPTd = data.length ? (data.reduce((a,r)=>a+num(r["PPT DIARIOS"]),0) / data.length) : 0;
+  const avgSRVd = data.length ? (data.reduce((a,r)=>a+num(r["SERVIS DIARIOS"]),0) / data.length) : 0;
+
+  // eficiencia: usamos promedio de % si existe, si no ds/dp
+  let eff = 0;
+  const hasPct = data.some(r => r["% SERVIS VS PPT"]!==undefined && r["% SERVIS VS PPT"]!=="");
+  if(hasPct){
+    eff = data.length ? (data.reduce((a,r)=>a+num(r["% SERVIS VS PPT"]),0) / data.length) : 0;
+    if(eff>0 && eff<2) eff*=100;
+  } else {
+    eff = avgPPTd>0 ? (avgSRVd/avgPPTd)*100 : 0;
+  }
+
+  $("pptTotal").textContent = totalPPT.toLocaleString("es-AR");
+  $("pptDaily").textContent = avgPPTd.toFixed(1);
+  $("srvDaily").textContent = avgSRVd.toFixed(1);
+  $("effPct").textContent   = eff.toFixed(1) + "%";
+
+  const pill=$("pptSemPill"), card=$("pptSemCard");
+  if(eff>=CONFIG.EFF_TARGET){
+    pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> OK (≥${CONFIG.EFF_TARGET}%)`;
+    setSem(pill, card, "ok");
+  } else if(eff>=CONFIG.EFF_TARGET-10){
+    pill.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Alerta`;
+    setSem(pill, card, "warn");
+  } else {
+    pill.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Bajo`;
+    setSem(pill, card, "bad");
+  }
+
+  // Charts:
+  const xMonths = monthSort(uniq(meses.map(cleanMonthName)));
+
+  // sum ppt y servis por mes
+  const pptByM = xMonths.map(m => data.filter(r=>cleanMonthName(r["MES"])===cleanMonthName(m)).reduce((a,r)=>a+num(r["AVANCE PPT"]),0));
+  const srvByM = xMonths.map(m => data.filter(r=>cleanMonthName(r["MES"])===cleanMonthName(m)).reduce((a,r)=>a+num(r["AVANCE SERVIS"]),0));
+
+  makeBarChart("pptBars","chartPptBars", xMonths, [
+    { label:"Avance PPT", data:pptByM, backgroundColor:"rgba(47,107,255,.75)", borderRadius:10 },
+    { label:"Avance Servis", data:srvByM, backgroundColor:"rgba(25,195,125,.65)", borderRadius:10 }
+  ], v=>v.toLocaleString("es-AR"));
+
+  // eficiencia por mes (promedio)
+  const effByM = xMonths.map(m => {
+    const rows = data.filter(r=>cleanMonthName(r["MES"])===cleanMonthName(m));
+    if(!rows.length) return 0;
+    let e=0;
+    if(hasPct){
+      e = rows.reduce((a,r)=>a+num(r["% SERVIS VS PPT"]),0)/rows.length;
+      if(e>0 && e<2) e*=100;
+      return e;
+    }
+    const dp = rows.reduce((a,r)=>a+num(r["PPT DIARIOS"]),0)/rows.length;
+    const ds = rows.reduce((a,r)=>a+num(r["SERVIS DIARIOS"]),0)/rows.length;
+    return dp>0 ? (ds/dp)*100 : 0;
+  });
+
+  makeLineChart("effLine","chartEffLine", xMonths, [{
+    label:"% Servis Vs PPT",
+    data: effByM,
+    borderColor: "#F5A524",
+    backgroundColor:"transparent",
+    tension:.35,
+    borderWidth:3,
+    pointRadius:2
+  }], v=>v+"%");
+
+  setBadgeRange(`PPT · Año ${y} · Meses ${meses.length} · Sucs ${sucs.length}`);
+}
+
+/* =======================
+   Update PLAN
+   ======================= */
+function upPlan(){
+  if(!dbPlan.length) return;
+
+  const suc = $("planSuc").value;
+  const kpi = $("planKpi").value;
+  let meses = vals("planMes");
+  if(!meses.length) meses = uniq(dbPlan.map(r=>cleanMonthName(r["MES"])));
+
+  const xMonths = monthSort(uniq(meses.map(cleanMonthName)));
+  const rows = dbPlan.filter(r => r["SUCURSAL"]===suc && xMonths.includes(cleanMonthName(r["MES"])));
+
+  const serie = xMonths.map(m => {
+    const r = rows.find(x => cleanMonthName(x["MES"])===cleanMonthName(m));
+    return r ? num(r[U(kpi)] ?? r[kpi]) : 0;
+  });
+
+  makeBarChart("planKpi","chartPlanKpi", xMonths, [{
+    label: kpi,
+    data: serie,
+    backgroundColor:"rgba(47,107,255,.70)",
+    borderRadius:10
+  }]);
+
+  // Top KPIs del “primer mes seleccionado”
+  const monthPick = xMonths[0] || "";
+  const monthRow = dbPlan.find(r => r["SUCURSAL"]===suc && cleanMonthName(r["MES"])===cleanMonthName(monthPick)) || null;
+  const tbody = $("planTopTable").querySelector("tbody");
+  tbody.innerHTML = "";
+  if(monthRow){
+    const keys = Object.keys(monthRow).filter(k => !["SUCURSAL","MES","AÑO"].includes(U(k)));
+    const top = keys.map(k => ({ k, v: num(monthRow[k]) }))
+                   .sort((a,b)=> b.v - a.v)
+                   .slice(0, 8);
+
+    top.forEach(it=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML = `<td>${it.k}</td><td class="right">${it.v.toLocaleString("es-AR")}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  setBadgeRange(`Plan 2026 · ${suc} · KPI “${kpi}” · Meses ${xMonths.length}`);
+}
+
+/* =======================
+   Events
+   ======================= */
+function bindNav(){
+  document.querySelectorAll(".navBtn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      const view = btn.getAttribute("data-view");
+      document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+      $("view-"+view).classList.add("active");
+
+      if(view==="fac"){
+        $("pageTitle").textContent="Avance Facturación";
+        $("pageHint").textContent="KPIs + ritmo vs tiempo + tendencia por sucursal.";
+        upFac();
+      } else if(view==="ppt"){
+        $("pageTitle").textContent="PPT & Eficiencia";
+        $("pageHint").textContent="Productividad + eficiencia Servis/PPT.";
+        upPPT();
+      } else {
+        $("pageTitle").textContent="Plan Negocio 2026";
+        $("pageHint").textContent="Selector KPI + sucursal + meses.";
+        upPlan();
+      }
+    });
+  });
+}
+
+function bindFilters(){
+  ["facYear","facArea","facSuc","facMes"].forEach(id => $(id).addEventListener("change", upFac));
+  ["pptYear","pptSuc","pptMes"].forEach(id => $(id).addEventListener("change", upPPT));
+  ["planSuc","planKpi","planMes"].forEach(id => $(id).addEventListener("change", upPlan));
+}
+
+/* =======================
+   Boot
+   ======================= */
+(function boot(){
+  nowTick();
+  bindNav();
+  bindFilters();
+  $("btnSync").addEventListener("click", syncAll);
+  $("btnClear").addEventListener("click", clearCache);
+
+  const ok = loadCache();
+  if(!ok) syncAll(); // primera vez
+})();
+</script>
+</body>
+</html>
