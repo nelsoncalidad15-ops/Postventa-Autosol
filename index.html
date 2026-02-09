@@ -678,7 +678,7 @@ const PAL = ["#2F6BFF","#19C37D","#F5A524","#F24E5C","#8950FC","#EAB308","#22C55
 
 function makeLineChart(key, canvasId, labels, datasets, yFmt){
   destroyChart(key);
-  const ctx = $(canvasId).getContext("2d");
+  const ctx = document.getElementById(canvasId).getContext("2d");
   charts[key] = new Chart(ctx, {
     type:"line",
     data:{ labels, datasets },
@@ -686,29 +686,57 @@ function makeLineChart(key, canvasId, labels, datasets, yFmt){
       responsive:true,
       maintainAspectRatio:false,
       plugins:{
-        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{weight:"800"} } },
+        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{ weight:"800" } } },
         tooltip:{ enabled:true }
       },
-    scales:{
-  x:{
-    ticks:{
-      color:"rgba(255,255,255,.65)",
-      font:{ weight:"700" }
-    },
-    grid:{ color:"rgba(255,255,255,.06)" }
-  },
-  y:{
-    ticks:{
-      color:"rgba(255,255,255,.65)",
-      font:{ weight:"700" },
-      callback: yFmt || (v => v)
-    },
-    grid:{ color:"rgba(255,255,255,.06)" }
-  }
-}
-
+      scales:{
+        x:{
+          ticks:{ color:"rgba(255,255,255,.65)", font:{ weight:"700" } },
+          grid:{ color:"rgba(255,255,255,.06)" }
+        },
+        y:{
+          ticks:{
+            color:"rgba(255,255,255,.65)",
+            font:{ weight:"700" },
+            callback: yFmt || (v => v)
+          },
+          grid:{ color:"rgba(255,255,255,.06)" }
+        }
+      }
+    }
   });
 }
+
+function makeBarChart(key, canvasId, labels, datasets, yFmt){
+  destroyChart(key);
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  charts[key] = new Chart(ctx, {
+    type:"bar",
+    data:{ labels, datasets },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{ weight:"800" } } }
+      },
+      scales:{
+        x:{
+          ticks:{ color:"rgba(255,255,255,.65)", font:{ weight:"700" } },
+          grid:{ color:"rgba(255,255,255,.06)" }
+        },
+        y:{
+          ticks:{
+            color:"rgba(255,255,255,.65)",
+            font:{ weight:"700" },
+            callback: yFmt || (v => v)
+          },
+          grid:{ color:"rgba(255,255,255,.06)" }
+        }
+      }
+    }
+  });
+}
+
 
 function makeBarChart(key, canvasId, labels, datasets, yFmt){
   destroyChart(key);
@@ -1206,6 +1234,7 @@ function bindFilters(){
 </script>
 </body>
 </html>
+
 
 
 
