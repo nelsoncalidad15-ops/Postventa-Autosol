@@ -673,7 +673,7 @@ function destroyChart(key){
   if(charts[key]){ charts[key].destroy(); delete charts[key]; }
 }
 
-// No seteamos colores manuales en exceso, pero acá sí conviene una paleta fija de marca.
+// Paleta fija de marca
 const PAL = ["#2F6BFF","#19C37D","#F5A524","#F24E5C","#8950FC","#EAB308","#22C55E","#60A5FA","#FB7185"];
 
 function makeLineChart(key, canvasId, labels, datasets, yFmt){
@@ -703,8 +703,8 @@ function makeLineChart(key, canvasId, labels, datasets, yFmt){
           grid:{ color:"rgba(255,255,255,.06)" }
         }
       }
-    
-
+    }
+  });
 }
 
 function makeBarChart(key, canvasId, labels, datasets, yFmt){
@@ -737,55 +737,29 @@ function makeBarChart(key, canvasId, labels, datasets, yFmt){
   });
 }
 
-
-function makeBarChart(key, canvasId, labels, datasets, yFmt){
-  destroyChart(key);
-  const ctx = $(canvasId).getContext("2d");
-  charts[key] = new Chart(ctx, {
-    type:"bar",
-    data:{ labels, datasets },
-    options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      plugins:{
-        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{weight:"800"} } }
-      },
-     scales:{
-  x:{
-    ticks:{
-      color:"rgba(255,255,255,.65)",
-      font:{ weight:"700" }
-    },
-    grid:{ color:"rgba(255,255,255,.06)" }
-  },
-  y:{
-    ticks:{
-      color:"rgba(255,255,255,.65)",
-      font:{ weight:"700" },
-      callback: yFmt || (v => v)
-    },
-    grid:{ color:"rgba(255,255,255,.06)" }
-  }
-}
-
-  });
-}
-
 function makeDoughnut(key, canvasId, labels, data){
   destroyChart(key);
-  const ctx=$(canvasId).getContext("2d");
-  charts[key]=new Chart(ctx,{
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  charts[key] = new Chart(ctx, {
     type:"doughnut",
-    data:{ labels, datasets:[{ data, backgroundColor: labels.map((_,i)=>PAL[i%PAL.length]), borderWidth:0 }]},
+    data:{
+      labels,
+      datasets:[{
+        data,
+        backgroundColor: labels.map((_,i)=>PAL[i%PAL.length]),
+        borderWidth:0
+      }]
+    },
     options:{
       responsive:true,
       maintainAspectRatio:false,
       plugins:{
-        legend:{ position:"bottom", labels:{ color:"rgba(255,255,255,.70)", font:{weight:"800"} } }
+        legend:{ position:"bottom", labels:{ color:"rgba(255,255,255,.70)", font:{ weight:"800" } } }
       }
     }
   });
 }
+
 
 /* =======================
    Load / Cache / Sync
@@ -1234,6 +1208,7 @@ function bindFilters(){
 </script>
 </body>
 </html>
+
 
 
 
