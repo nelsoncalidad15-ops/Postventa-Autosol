@@ -689,11 +689,24 @@ function makeLineChart(key, canvasId, labels, datasets, yFmt){
         legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{weight:"800"} } },
         tooltip:{ enabled:true }
       },
-      scales:{
-        x:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700"} }, grid:{ color:"rgba(255,255,255,.06)" } },
-        y:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700)", callback: yFmt || (v=>v) }, grid:{ color:"rgba(255,255,255,.06)" } }
-      }
-    }
+    scales:{
+  x:{
+    ticks:{
+      color:"rgba(255,255,255,.65)",
+      font:{ weight:"700" }
+    },
+    grid:{ color:"rgba(255,255,255,.06)" }
+  },
+  y:{
+    ticks:{
+      color:"rgba(255,255,255,.65)",
+      font:{ weight:"700" },
+      callback: yFmt || (v => v)
+    },
+    grid:{ color:"rgba(255,255,255,.06)" }
+  }
+}
+
   });
 }
 
@@ -709,11 +722,24 @@ function makeBarChart(key, canvasId, labels, datasets, yFmt){
       plugins:{
         legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{weight:"800"} } }
       },
-      scales:{
-        x:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700"} }, grid:{ color:"rgba(255,255,255,.06)" } },
-        y:{ ticks:{ color:"rgba(255,255,255,.65)", font:{weight:"700}", callback: yFmt || (v=>v) }, grid:{ color:"rgba(255,255,255,.06)" } }
-      }
-    }
+     scales:{
+  x:{
+    ticks:{
+      color:"rgba(255,255,255,.65)",
+      font:{ weight:"700" }
+    },
+    grid:{ color:"rgba(255,255,255,.06)" }
+  },
+  y:{
+    ticks:{
+      color:"rgba(255,255,255,.65)",
+      font:{ weight:"700" },
+      callback: yFmt || (v => v)
+    },
+    grid:{ color:"rgba(255,255,255,.06)" }
+  }
+}
+
   });
 }
 
@@ -1180,5 +1206,6 @@ function bindFilters(){
 </script>
 </body>
 </html>
+
 
 
