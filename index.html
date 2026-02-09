@@ -737,10 +737,21 @@ function makeDoughnut(key, canvasId, labels, data){
    Load / Cache / Sync
    ======================= */
 async function fetchCsv(url){
-  const res = await fetch(url, { cache:"no-store" });
-  if(!res.ok) throw new Error("No se pudo leer CSV");
-  return await res.text();
+  // 1) intento directo
+  try{
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    return await res.text();
+  }catch(e){
+    // 2) fallback por proxy CORS (r.jina.ai)
+    const prox = "https://r.jina.ai/https://";
+    const clean = url.replace(/^https?:\/\//, "");
+    const res2 = await fetch(prox + clean, { cache:"no-store" });
+    if(!res2.ok) throw new Error("Proxy HTTP " + res2.status);
+    return await res2.text();
+  }
 }
+
 
 function saveCache(){
   try{
@@ -1168,3 +1179,4 @@ function bindFilters(){
 </script>
 </body>
 </html>
+
