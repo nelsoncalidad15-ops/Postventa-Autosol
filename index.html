@@ -89,7 +89,7 @@
       color:var(--text);
       cursor:pointer;
       transition:.18s ease;
-      font-weight:800;
+      font-weight:900;
     }
     .navBtn i{width:18px; text-align:center; color:rgba(255,255,255,.80);}
     .navBtn:hover{transform:translateY(-1px); background:rgba(255,255,255,.08);}
@@ -104,12 +104,13 @@
       border:none; cursor:pointer;
       border-radius:14px;
       padding:10px 12px;
-      font-weight:900;
+      font-weight:950;
       display:inline-flex; align-items:center; gap:8px;
       color:var(--text);
       border:1px solid var(--stroke);
       background:rgba(255,255,255,.06);
       transition:.18s ease;
+      user-select:none;
     }
     .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.09);}
     .btnPrimary{
@@ -119,6 +120,10 @@
     .btnDanger{
       background:linear-gradient(135deg, rgba(242,78,92,.95), rgba(242,78,92,.25));
       border-color:rgba(242,78,92,.35);
+    }
+    .btnGhost{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.10);
     }
 
     .foot{
@@ -154,7 +159,7 @@
     }
     .titleWrap{display:flex; flex-direction:column; gap:4px;}
     .pageTitle{font-size:1.18rem; font-weight:950; letter-spacing:.2px;}
-    .pageHint{font-size:.86rem; color:var(--muted);}
+    .pageHint{font-size:.86rem; color:var(--muted); font-weight:800;}
     .metaWrap{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;}
     .badge{
       display:inline-flex; align-items:center; gap:8px;
@@ -164,6 +169,7 @@
       background:rgba(255,255,255,.06);
       font-size:.84rem;
       color:var(--muted);
+      font-weight:900;
     }
 
     .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;}
@@ -173,10 +179,11 @@
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       box-shadow:var(--shadow);
       padding:14px;
+      min-height:120px;
     }
-    .kTitle{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:900;}
+    .kTitle{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:950;}
     .kVal{margin-top:10px; font-size:1.7rem; font-weight:950;}
-    .kSub{margin-top:6px; font-size:.88rem; color:var(--muted); font-weight:800;}
+    .kSub{margin-top:6px; font-size:.88rem; color:var(--muted); font-weight:850;}
     .statusPill{
       margin-top:10px;
       display:inline-flex; align-items:center; gap:8px;
@@ -185,9 +192,9 @@
       font-size:.78rem; font-weight:950;
       background:rgba(255,255,255,.06);
     }
-    .statusPill.ok{border-color:rgba(25,195,125,.35); color:rgba(255,255,255,.92)}
-    .statusPill.warn{border-color:rgba(245,165,36,.35)}
-    .statusPill.bad{border-color:rgba(242,78,92,.35)}
+    .statusPill.ok{border-color:rgba(25,195,125,.35);}
+    .statusPill.warn{border-color:rgba(245,165,36,.35);}
+    .statusPill.bad{border-color:rgba(242,78,92,.35);}
 
     .section{
       margin-top:14px;
@@ -210,7 +217,7 @@
       font-weight:950;
       letter-spacing:.2px;
     }
-    .panelHead .small{font-size:.82rem; color:var(--muted); font-weight:800;}
+    .panelHead .small{font-size:.82rem; color:var(--muted); font-weight:900;}
     .filters{
       display:grid;
       grid-template-columns:repeat(4,1fr);
@@ -226,7 +233,7 @@
       background:rgba(255,255,255,.06);
       color:var(--text);
       outline:none;
-      font-weight:800;
+      font-weight:900;
     }
     select[multiple]{height:112px}
     option{background:#0B1220; color:var(--text);}
@@ -234,9 +241,6 @@
     .chartBox{height:360px;}
     canvas{width:100% !important; height:100% !important;}
 
-    .stack{display:flex; flex-direction:column; gap:14px;}
-    .miniRow{display:flex; justify-content:space-between; gap:10px; align-items:center;}
-    .miniRow b{font-weight:950}
     .barTrack{
       height:12px; border-radius:999px; overflow:hidden;
       background:rgba(255,255,255,.08);
@@ -260,13 +264,14 @@
       letter-spacing:.08em;
       color:var(--muted);
       padding:0 8px 6px;
+      font-weight:950;
     }
     .table td{
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.10);
       padding:10px 10px;
       border-left:none; border-right:none;
-      font-weight:800;
+      font-weight:900;
       color:rgba(255,255,255,.90);
     }
     .table tr td:first-child{border-top-left-radius:14px;border-bottom-left-radius:14px;border-left:1px solid rgba(255,255,255,.10)}
@@ -276,6 +281,40 @@
 
     .view{display:none;}
     .view.active{display:block;}
+
+    .errorBox{
+      display:none;
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(242,78,92,.35);
+      background:rgba(242,78,92,.10);
+      color:rgba(255,255,255,.92);
+      font-weight:850;
+    }
+    .errorBox code{
+      display:block;
+      margin-top:8px;
+      color:rgba(255,255,255,.85);
+      white-space:pre-wrap;
+      font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size:.82rem;
+      opacity:.95;
+    }
+
+    .gaugeWrap{
+      height:160px; position:relative; margin-top:10px;
+    }
+    .gaugeCenter{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:950; font-size:1.55rem;
+      text-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    .gaugeMinMax{
+      display:flex; justify-content:space-between; margin-top:-6px;
+      font-size:.78rem; color:var(--muted); font-weight:850;
+    }
 
     @media (max-width:1200px){
       .section{grid-template-columns:1fr; }
@@ -316,13 +355,18 @@
 
       <div class="sideActions">
         <button class="btn btnPrimary" id="btnSync"><i class="fa-solid fa-rotate"></i> Sincronizar</button>
+        <button class="btn btnGhost" id="btnAuto"><i class="fa-solid fa-bolt"></i> Auto: ON</button>
         <button class="btn btnDanger" id="btnClear"><i class="fa-solid fa-trash"></i> Borrar caché</button>
       </div>
 
       <div class="foot">
         <div><b>Estado</b></div>
-        <div class="footRow"><span><span class="dot" id="dotState"></span><span id="stateText">Sin datos</span></span><span id="rowsText">—</span></div>
+        <div class="footRow">
+          <span><span class="dot" id="dotState"></span><span id="stateText">Sin datos</span></span>
+          <span id="rowsText">—</span>
+        </div>
         <div class="footRow"><span class="muted">Última sync</span><span id="syncText">—</span></div>
+        <div class="footRow"><span class="muted">Auto-refresh</span><span id="autoText">Cada 10 min</span></div>
       </div>
     </aside>
 
@@ -338,21 +382,25 @@
             <div class="badge" id="badgeNow"><i class="fa-solid fa-clock"></i> <span id="nowText">—</span></div>
           </div>
         </div>
+        <div class="errorBox" id="errBox">
+          <div><i class="fa-solid fa-triangle-exclamation"></i> No se pudo actualizar en vivo. Se mantiene el último dato disponible.</div>
+          <code id="errText"></code>
+        </div>
       </div>
 
       <!-- VIEW: FACTURACIÓN -->
       <section class="view active" id="view-fac">
         <div class="grid4">
           <div class="card">
-            <div class="kTitle">Facturación Real</div>
-            <div class="kVal" id="facReal">$0 M</div>
-            <div class="kSub muted" id="facRealSub">Suma AVANCE A FECHA</div>
-          </div>
-
-          <div class="card">
             <div class="kTitle">Objetivo Mensual</div>
             <div class="kVal" id="facObj">$0 M</div>
             <div class="kSub muted">Suma OBJETIVO MENSUAL</div>
+          </div>
+
+          <div class="card">
+            <div class="kTitle">Avance a Fecha</div>
+            <div class="kVal" id="facReal">$0 M</div>
+            <div class="kSub muted">Suma AVANCE A FECHA</div>
           </div>
 
           <div class="card">
@@ -368,7 +416,7 @@
           </div>
         </div>
 
-        <div class="panel">
+        <div class="panel" style="margin-top:14px;">
           <div class="panelHead">
             <h3><i class="fa-solid fa-gauge-high" style="color:var(--brand)"></i> Ritmo del mes</h3>
             <div class="small" id="facPacingText">Tiempo 0% · Avance 0%</div>
@@ -401,7 +449,7 @@
               <h3><i class="fa-solid fa-chart-pie" style="color:var(--brand)"></i> Distribución por Sucursal</h3>
               <div class="small muted">AVANCE A FECHA (sum)</div>
             </div>
-            <div class="chartBox" style="height:320px"><canvas id="chartFacShare"></canvas></div>
+            <div class="chartBox" style="height:300px"><canvas id="chartFacShare"></canvas></div>
 
             <table class="table" id="facTable">
               <thead>
@@ -422,9 +470,9 @@
       <section class="view" id="view-ppt">
         <div class="grid4">
           <div class="card">
-            <div class="kTitle">Avance PPT</div>
+            <div class="kTitle">Avance PPT (sum)</div>
             <div class="kVal" id="pptTotal">0</div>
-            <div class="kSub muted">Suma Avance PPT</div>
+            <div class="kSub muted">Suma AVANCE PPT</div>
           </div>
           <div class="card">
             <div class="kTitle">PPT diarios</div>
@@ -434,16 +482,16 @@
           <div class="card">
             <div class="kTitle">Servicios diarios</div>
             <div class="kVal" id="srvDaily">0.0</div>
-            <div class="kSub muted">Promedio servis DIARIOS</div>
+            <div class="kSub muted">Promedio SERVIS DIARIOS</div>
           </div>
           <div class="card" id="pptSemCard">
-            <div class="kTitle">Eficiencia Servis vs PPT</div>
-            <div class="kVal" id="effPct">0.0%</div>
+            <div class="kTitle">Eficiencia (% Servis vs PPT)</div>
+            <div class="kVal" id="effPct">0%</div>
             <div class="statusPill" id="pptSemPill"><i class="fa-solid fa-circle-minus"></i> —</div>
           </div>
         </div>
 
-        <div class="panel">
+        <div class="panel" style="margin-top:14px;">
           <div class="panelHead">
             <h3><i class="fa-solid fa-filter" style="color:var(--brand)"></i> Filtros</h3>
             <div class="small muted">Datos por mes/sucursal</div>
@@ -459,7 +507,7 @@
         <div class="section">
           <div class="panel">
             <div class="panelHead">
-              <h3><i class="fa-solid fa-chart-line" style="color:var(--brand)"></i> Avance PPT vs Avance Servis</h3>
+              <h3><i class="fa-solid fa-chart-column" style="color:var(--brand)"></i> Avance PPT vs Avance Servis</h3>
               <div class="small muted">Comparación por mes (sum)</div>
             </div>
             <div class="chartBox"><canvas id="chartPptBars"></canvas></div>
@@ -476,7 +524,30 @@
 
       <!-- VIEW: PLAN -->
       <section class="view" id="view-plan">
-        <div class="panel">
+        <div class="grid4">
+          <div class="card">
+            <div class="kTitle">KPI Actual (último mes)</div>
+            <div class="kVal" id="planKpiNow">0</div>
+            <div class="kSub muted" id="planKpiNowSub">—</div>
+          </div>
+          <div class="card">
+            <div class="kTitle">Sucursal</div>
+            <div class="kVal" id="planSucNow">—</div>
+            <div class="kSub muted">Seleccionada</div>
+          </div>
+          <div class="card">
+            <div class="kTitle">Meses seleccionados</div>
+            <div class="kVal" id="planMonthsNow">0</div>
+            <div class="kSub muted">Filtro</div>
+          </div>
+          <div class="card">
+            <div class="kTitle">Referencia</div>
+            <div class="kVal" id="planRefNow">—</div>
+            <div class="kSub muted">Informativo</div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
           <div class="panelHead">
             <h3><i class="fa-solid fa-bullseye" style="color:var(--brand)"></i> Plan Negocio 2026</h3>
             <div class="small muted">Selector KPI + sucursal + meses</div>
@@ -528,10 +599,16 @@ const CONFIG = {
   FAC_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxUrEIVysJ9HgBXHOJnZ_MGPL2Huqw1b4h1zQB-SugNLB2TzTmx7CnQrPIAKKnHA/pub?gid=609635821&single=true&output=csv",
   PPT_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxUrEIVysJ9HgBXHOJnZ_MGPL2Huqw1b4h1zQB-SugNLB2TzTmx7CnQrPIAKKnHA/pub?gid=1177925024&single=true&output=csv",
   PLAN_CSV:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTxUrEIVysJ9HgBXHOJnZ_MGPL2Huqw1b4h1zQB-SugNLB2TzTmx7CnQrPIAKKnHA/pub?gid=2103759067&single=true&output=csv",
-  CACHE_KEY:"autosol_dash_csv_v1",
-  EFF_TARGET: 60,            // eficiencia objetivo (%)
-  FAC_OK: 95,                // semáforo facturación OK
-  FAC_WARN: 90               // semáforo facturación alerta
+
+  CACHE_KEY:"autosol_dash_csv_v2",
+
+  AUTO_REFRESH_MIN: 10,       // auto refresh (minutos)
+  EFF_TARGET: 60,             // eficiencia objetivo (%)
+  FAC_OK: 95,                 // semáforo facturación OK
+  FAC_WARN: 90,               // semáforo facturación alerta
+
+  FETCH_TIMEOUT_MS: 12000,    // timeout por request
+  FETCH_RETRIES: 2            // reintentos por url/proxy
 };
 
 /* =======================
@@ -540,18 +617,42 @@ const CONFIG = {
 const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 let dbFac=[], dbPPT=[], dbPlan=[];
 const charts = {};
+let autoEnabled = true;
+let autoTimer = null;
+let isSyncing = false;
 
 /* =======================
    Helpers DOM
    ======================= */
 const $ = (id)=>document.getElementById(id);
-const nowTick = ()=> {
+
+function setErrorBox(show, msg=""){
+  const box = $("errBox");
+  const txt = $("errText");
+  if(show){
+    box.style.display = "block";
+    txt.textContent = msg || "";
+  }else{
+    box.style.display = "none";
+    txt.textContent = "";
+  }
+}
+
+function nowTick(){
   $("nowText").textContent = new Date().toLocaleString("es-AR");
   setTimeout(nowTick, 1000*10);
-};
+}
+
+function debounce(fn, wait=120){
+  let t=null;
+  return (...args)=>{
+    clearTimeout(t);
+    t=setTimeout(()=>fn(...args), wait);
+  };
+}
 
 /* =======================
-   CSV parser (simple + robusto)
+   CSV parser (robusto)
    ======================= */
 function parseCSV(text){
   const rows = [];
@@ -601,7 +702,6 @@ function cleanMonthName(raw){
   if (s.includes("OCT")) return "Octubre";
   if (s.includes("NOV")) return "Noviembre";
   if (s.includes("DIC")) return "Diciembre";
-  // si viene como número 1..12
   const n = Number(raw);
   if(!Number.isNaN(n) && n>=1 && n<=12) return MONTHS[n-1];
   return raw.toString().trim();
@@ -616,7 +716,6 @@ function normalizeDb(db){
       const kk = U(k);
       let v = r[k];
       if(kk === "MES" || kk.includes("MES")) v = cleanMonthName(v);
-      // normalizar sucursal "Suc." -> "SUC."
       o[kk] = v;
     });
     return o;
@@ -641,14 +740,21 @@ function monthSort(arr){
   return arr.slice().sort((a,b)=> MONTHS.indexOf(cleanMonthName(a)) - MONTHS.indexOf(cleanMonthName(b)));
 }
 
-function fillSelect(id, arr, all=false){
-  const s=$(id); s.innerHTML="";
+function fillSelect(id, arr, all=false, preserve=null){
+  const s=$(id);
+  const prev = preserve ?? Array.from(s.selectedOptions||[]).map(o=>o.value);
+  s.innerHTML="";
   arr.forEach(x=>{
     const opt=document.createElement("option");
     opt.value=x; opt.textContent=x;
     if(all) opt.selected=true;
+    if(!all && prev && prev.includes(x)) opt.selected=true;
     s.appendChild(opt);
   });
+  // si no quedó nada seleccionado en multi, seleccionamos todo
+  if(s.multiple && !Array.from(s.selectedOptions).length){
+    Array.from(s.options).forEach(o=>o.selected=true);
+  }
 }
 
 function vals(id){
@@ -656,7 +762,6 @@ function vals(id){
 }
 
 function setSem(pill, card, state){
-  // state: "ok" | "warn" | "bad"
   pill.className = "statusPill " + state;
   card.style.borderColor = state==="ok" ? "rgba(25,195,125,.35)" : state==="warn" ? "rgba(245,165,36,.35)" : "rgba(242,78,92,.35)";
   card.style.boxShadow = state==="ok" ? "0 14px 55px rgba(25,195,125,.10)" : state==="warn" ? "0 14px 55px rgba(245,165,36,.10)" : "0 14px 55px rgba(242,78,92,.12)";
@@ -672,99 +777,117 @@ function setBadgeRange(txt){
 function destroyChart(key){
   if(charts[key]){ charts[key].destroy(); delete charts[key]; }
 }
-
-// Paleta fija de marca
 const PAL = ["#2F6BFF","#19C37D","#F5A524","#F24E5C","#8950FC","#EAB308","#22C55E","#60A5FA","#FB7185"];
 
 function makeLineChart(key, canvasId, labels, datasets, yFmt){
   destroyChart(key);
   const ctx = document.getElementById(canvasId).getContext("2d");
-
   charts[key] = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          labels: {
-            color: "rgba(255,255,255,.75)",
-            font: { weight: "800" }
-          }
-        },
-        tooltip: { enabled: true }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: "rgba(255,255,255,.65)",
-            font: { weight: "700" }
-          },
-          grid: { color: "rgba(255,255,255,.06)" }
-        },
-        y: {
-          ticks: {
-            color: "rgba(255,255,255,.65)",
-            font: { weight: "700" },
-            callback: yFmt || (v => v)
-          },
-          grid: { color: "rgba(255,255,255,.06)" }
-        }
-      }
-    }
-  });
-}
-
-
-
-
-
-function makeDoughnut(key, canvasId, labels, data){
-  destroyChart(key);
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  charts[key] = new Chart(ctx, {
-    type:"doughnut",
-    data:{
-      labels,
-      datasets:[{
-        data,
-        backgroundColor: labels.map((_,i)=>PAL[i%PAL.length]),
-        borderWidth:0
-      }]
-    },
+    type:"line",
+    data:{ labels, datasets },
     options:{
       responsive:true,
       maintainAspectRatio:false,
       plugins:{
-        legend:{ position:"bottom", labels:{ color:"rgba(255,255,255,.70)", font:{ weight:"800" } } }
+        legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{ weight:"800" } } },
+        tooltip:{ enabled:true }
+      },
+      scales:{
+        x:{ ticks:{ color:"rgba(255,255,255,.65)", font:{ weight:"700" } }, grid:{ color:"rgba(255,255,255,.06)" } },
+        y:{ ticks:{ color:"rgba(255,255,255,.65)", font:{ weight:"700" }, callback: yFmt || (v=>v) }, grid:{ color:"rgba(255,255,255,.06)" } }
       }
     }
   });
 }
 
-
-/* =======================
-   Load / Cache / Sync
-   ======================= */
-async function fetchCsv(url){
-  // 1) intento directo (si CORS permite)
-  try{
-    const res = await fetch(url, { cache:"no-store" });
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    return await res.text();
-  }catch(e){
-    // 2) fallback por proxy CORS (r.jina.ai)
-    const prox = "https://r.jina.ai/http://";
-    const clean = url.replace(/^https?:\/\//, "");
-    const res2 = await fetch(prox + clean, { cache:"no-store" });
-    if(!res2.ok) throw new Error("Proxy HTTP " + res2.status);
-    return await res2.text();
-  }
+function makeBarChart(key, canvasId, labels, datasets, yFmt){
+  destroyChart(key);
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  charts[key] = new Chart(ctx, {
+    type:"bar",
+    data:{ labels, datasets },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ color:"rgba(255,255,255,.75)", font:{ weight:"800" } } } },
+      scales:{
+        x:{ ticks:{ color:"rgba(255,255,255,.65)", font:{ weight:"700" } }, grid:{ color:"rgba(255,255,255,.06)" } },
+        y:{ ticks:{ color:"rgba(255,255,255,.65)", font:{ weight:"700" }, callback: yFmt || (v=>v) }, grid:{ color:"rgba(255,255,255,.06)" } }
+      }
+    }
+  });
 }
 
+function makeDoughnut(key, canvasId, labels, data){
+  destroyChart(key);
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  charts[key]=new Chart(ctx,{
+    type:"doughnut",
+    data:{ labels, datasets:[{ data, backgroundColor: labels.map((_,i)=>PAL[i%PAL.length]), borderWidth:0, cutout:"72%" }]},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{ legend:{ position:"bottom", labels:{ color:"rgba(255,255,255,.70)", font:{ weight:"800" } } } }
+    }
+  });
+}
 
+/* =======================
+   Fetch (estable: timeout + retries + proxies)
+   ======================= */
+function withTimeout(promise, ms){
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), ms);
+  return { ctrl, p: Promise.race([promise(ctrl.signal), new Promise((_,rej)=>setTimeout(()=>rej(new Error("Timeout")), ms))]).finally(()=>clearTimeout(t)) };
+}
 
+function looksLikeCSV(text){
+  // Google a veces devuelve HTML de error/login. Esto lo evita.
+  const t = (text||"").trim();
+  if(!t) return false;
+  if(t.startsWith("<!DOCTYPE") || t.startsWith("<html") || t.includes("<body")) return false;
+  // al menos una coma en header
+  const firstLine = t.split(/\r?\n/)[0] || "";
+  return firstLine.includes(",");
+}
+
+async function tryFetch(url){
+  const { p } = withTimeout((signal)=>fetch(url, { cache:"no-store", signal }), CONFIG.FETCH_TIMEOUT_MS);
+  const res = await p;
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  const txt = await res.text();
+  if(!looksLikeCSV(txt)) throw new Error("Respuesta no parece CSV (posible HTML/CORS)");
+  return txt;
+}
+
+async function fetchCsv(url){
+  const proxies = [
+    (u)=>u, // directo
+    (u)=>"https://api.allorigins.win/raw?url=" + encodeURIComponent(u), // CORS-friendly
+    (u)=>"https://r.jina.ai/http://" + u.replace(/^https?:\/\//,"") // fallback
+  ];
+
+  let lastErr = null;
+
+  for(const px of proxies){
+    const target = px(url);
+    for(let attempt=0; attempt<=CONFIG.FETCH_RETRIES; attempt++){
+      try{
+        return await tryFetch(target);
+      }catch(e){
+        lastErr = e;
+        // pequeño backoff
+        await new Promise(r=>setTimeout(r, 250 + attempt*250));
+      }
+    }
+  }
+
+  throw lastErr || new Error("No se pudo leer CSV");
+}
+
+/* =======================
+   Cache / State
+   ======================= */
 function saveCache(){
   try{
     localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify({
@@ -783,7 +906,7 @@ function loadCache(){
     dbPPT = obj.dbPPT || [];
     dbPlan= obj.dbPlan|| [];
     setState(true, obj.lastSync, dbFac.length + dbPPT.length + dbPlan.length);
-    initAll();
+    initAll(false);
     return (dbFac.length||dbPPT.length||dbPlan.length);
   }catch(e){
     return false;
@@ -792,7 +915,9 @@ function loadCache(){
 
 function clearCache(){
   localStorage.removeItem(CONFIG.CACHE_KEY);
-  location.reload();
+  setState(false, null, 0);
+  // re-sincroniza sin recargar (más estable)
+  syncAll();
 }
 
 function setState(ok, iso, rows){
@@ -802,7 +927,22 @@ function setState(ok, iso, rows){
   $("syncText").textContent = iso ? new Date(iso).toLocaleString("es-AR") : "—";
 }
 
+function setAutoUI(){
+  $("btnAuto").innerHTML = autoEnabled
+    ? `<i class="fa-solid fa-bolt"></i> Auto: ON`
+    : `<i class="fa-solid fa-bolt"></i> Auto: OFF`;
+  $("btnAuto").className = "btn " + (autoEnabled ? "btnPrimary" : "btnGhost");
+  $("autoText").textContent = autoEnabled ? `Cada ${CONFIG.AUTO_REFRESH_MIN} min` : "Desactivado";
+}
+
+/* =======================
+   Sync
+   ======================= */
 async function syncAll(){
+  if(isSyncing) return;
+  isSyncing = true;
+  setErrorBox(false);
+
   try{
     $("dotState").className="dot warn";
     $("stateText").textContent="Sincronizando…";
@@ -821,25 +961,29 @@ async function syncAll(){
     setState(true, new Date().toISOString(), dbFac.length + dbPPT.length + dbPlan.length);
     initAll(true);
   }catch(e){
-    setState(false, null, 0);
-    alert("No pude sincronizar. Revisá que el Sheet siga publicado y que los links CSV sean accesibles.");
+    // Si falla live pero tenés cache, mantenemos cache y avisamos (no “se tilda”)
+    const hasCache = !!localStorage.getItem(CONFIG.CACHE_KEY);
+    setState(hasCache, hasCache ? JSON.parse(localStorage.getItem(CONFIG.CACHE_KEY)).lastSync : null, (dbFac.length+dbPPT.length+dbPlan.length)||0);
+    setErrorBox(true, String(e && e.message ? e.message : e));
     console.error(e);
+  }finally{
+    isSyncing = false;
   }
 }
 
 /* =======================
    Init filters + views
    ======================= */
-function initAll(force=false){
-  initFacFilters();
-  initPptFilters();
-  initPlanFilters();
+function initAll(preserveSelections=false){
+  initFacFilters(preserveSelections);
+  initPptFilters(preserveSelections);
+  initPlanFilters(preserveSelections);
   upFac();
   upPPT();
   upPlan();
 }
 
-function initFacFilters(){
+function initFacFilters(preserve=false){
   if(!dbFac.length) return;
 
   const years = uniq(dbFac.map(r=>r["AÑO"])).sort().reverse();
@@ -847,37 +991,44 @@ function initFacFilters(){
   const sucs  = uniq(dbFac.map(r=>r["SUCURSAL"])).sort();
   const meses = monthSort(uniq(dbFac.map(r=>cleanMonthName(r["MES"]))));
 
-  fillSelect("facYear", years);
-  fillSelect("facArea", areas, true);
-  fillSelect("facSuc", sucs, true);
-  fillSelect("facMes", meses, true);
+  fillSelect("facYear", years, false, preserve ? [$("facYear").value].filter(Boolean) : null);
+  if(!$("facYear").value && years.length) $("facYear").value = years[0];
+
+  fillSelect("facArea", areas, !preserve);
+  fillSelect("facSuc", sucs, !preserve);
+  fillSelect("facMes", meses, !preserve);
 }
 
-function initPptFilters(){
+function initPptFilters(preserve=false){
   if(!dbPPT.length) return;
 
   const years = uniq(dbPPT.map(r=> r["AÑO"] || r["Q-AÑO"] )).sort().reverse();
   const sucs  = uniq(dbPPT.map(r=> r["SUC."] || r["SUCURSAL"] || r["SUC"] )).sort();
   const meses = monthSort(uniq(dbPPT.map(r=>cleanMonthName(r["MES"]))));
 
-  fillSelect("pptYear", years);
-  fillSelect("pptSuc", sucs, true);
-  fillSelect("pptMes", meses, true);
+  fillSelect("pptYear", years, false, preserve ? [$("pptYear").value].filter(Boolean) : null);
+  if(!$("pptYear").value && years.length) $("pptYear").value = years[0];
+
+  fillSelect("pptSuc", sucs, !preserve);
+  fillSelect("pptMes", meses, !preserve);
 }
 
-function initPlanFilters(){
+function initPlanFilters(preserve=false){
   if(!dbPlan.length) return;
 
   const sucs = uniq(dbPlan.map(r=>r["SUCURSAL"])).sort();
   const meses = monthSort(uniq(dbPlan.map(r=>cleanMonthName(r["MES"]))));
 
-  // KPI keys: todo menos Sucursal/Mes
   const sample = dbPlan[0] || {};
   const kpis = Object.keys(sample).filter(k => !["SUCURSAL","MES","AÑO"].includes(U(k)));
 
-  fillSelect("planSuc", sucs);
-  fillSelect("planKpi", kpis);
-  fillSelect("planMes", meses, true);
+  fillSelect("planSuc", sucs, false, preserve ? [$("planSuc").value].filter(Boolean) : null);
+  if(!$("planSuc").value && sucs.length) $("planSuc").value = sucs[0];
+
+  fillSelect("planKpi", kpis, false, preserve ? [$("planKpi").value].filter(Boolean) : null);
+  if(!$("planKpi").value && kpis.length) $("planKpi").value = kpis[0];
+
+  fillSelect("planMes", meses, !preserve);
 }
 
 /* =======================
@@ -891,7 +1042,6 @@ function upFac(){
   let sucs  = vals("facSuc");
   let meses = vals("facMes");
 
-  // si el usuario dejó vacío, asumimos todo
   if(!areas.length) areas = uniq(dbFac.map(r=> (r["AREA"]||"").toString().replace(/FACTURACIÓN/ig,"").trim()));
   if(!sucs.length)  sucs  = uniq(dbFac.map(r=>r["SUCURSAL"]));
   if(!meses.length) meses = uniq(dbFac.map(r=>cleanMonthName(r["MES"])));
@@ -907,7 +1057,7 @@ function upFac(){
   const obj  = data.reduce((a,r)=>a+num(r["OBJETIVO MENSUAL"]),0);
   const desv = data.reduce((a,r)=>a+num(r["DESVIO A FECHA"]),0);
 
-  // % cumplimiento ponderado por objetivo (más justo)
+  // % ponderado por objetivo
   let wSum=0, w=0;
   data.forEach(r=>{
     const o=num(r["OBJETIVO MENSUAL"]);
@@ -923,7 +1073,6 @@ function upFac(){
   $("facDesvSub").textContent = desv>=0 ? "Mejor que el objetivo a la fecha" : "Por debajo del objetivo a la fecha";
   $("facPct").textContent  = pct.toFixed(1) + "%";
 
-  // Semáforo
   const pill=$("facSemPill"), card=$("facSemCard");
   if(pct>=CONFIG.FAC_OK){
     pill.innerHTML = `<i class="fa-solid fa-circle-check"></i> Objetivo`;
@@ -936,7 +1085,7 @@ function upFac(){
     setSem(pill, card, "bad");
   }
 
-  // Pacing tiempo vs avance (si el mes actual está dentro del filtro)
+  // Pacing
   const today=new Date();
   const thisYear = today.getFullYear().toString();
   const thisMonth = cleanMonthName(today.toLocaleString("es-ES",{month:"long"}));
@@ -951,7 +1100,7 @@ function upFac(){
   $("facBarVal").style.width  = Math.min(pct,100).toFixed(1)+"%";
   $("facPacingText").textContent = `Tiempo ${timePct.toFixed(0)}% · Avance ${pct.toFixed(0)}%`;
 
-  // Charts: tendencia por sucursal (líneas) y share (donut)
+  // Charts
   const xMonths = monthSort(uniq(meses.map(cleanMonthName)));
   const bySuc = sucs.slice();
 
@@ -974,19 +1123,17 @@ function upFac(){
 
   makeLineChart("facTrend","chartFacTrend", xMonths, datasets, v=>"$"+(v/1_000_000).toFixed(1)+"M");
 
-  // Share
   const shareLabels = bySuc;
   const shareData = bySuc.map(s => data.filter(r=>r["SUCURSAL"]===s).reduce((a,r)=>a+num(r["AVANCE A FECHA"]),0));
   makeDoughnut("facShare","chartFacShare", shareLabels, shareData);
 
-  // Tabla sucursal
   const tbody = $("facTable").querySelector("tbody");
   tbody.innerHTML = "";
   bySuc.forEach(s=>{
     const rS = data.filter(r=>r["SUCURSAL"]===s);
     const realS = rS.reduce((a,r)=>a+num(r["AVANCE A FECHA"]),0);
     const objS  = rS.reduce((a,r)=>a+num(r["OBJETIVO MENSUAL"]),0);
-    let pctS = objS>0 ? (realS/objS)*100 : 0;
+    const pctS = objS>0 ? (realS/objS)*100 : 0;
 
     const tr=document.createElement("tr");
     tr.innerHTML = `
@@ -1013,11 +1160,10 @@ function upPPT(){
   if(!sucs.length) sucs = uniq(dbPPT.map(r=> r["SUC."] || r["SUCURSAL"] || r["SUC"] ));
   if(!meses.length) meses = uniq(dbPPT.map(r=>cleanMonthName(r["MES"])));
 
-  const kSuc = "SUC.";
   const data = dbPPT.filter(r =>
     ((r["AÑO"]==y) || (r["Q-AÑO"]==y)) &&
     meses.includes(cleanMonthName(r["MES"])) &&
-    sucs.includes(r[kSuc] || r["SUCURSAL"] || r["SUC"])
+    sucs.includes(r["SUC."] || r["SUCURSAL"] || r["SUC"])
   );
 
   const totalPPT = data.reduce((a,r)=>a+num(r["AVANCE PPT"]),0);
@@ -1026,7 +1172,6 @@ function upPPT(){
   const avgPPTd = data.length ? (data.reduce((a,r)=>a+num(r["PPT DIARIOS"]),0) / data.length) : 0;
   const avgSRVd = data.length ? (data.reduce((a,r)=>a+num(r["SERVIS DIARIOS"]),0) / data.length) : 0;
 
-  // eficiencia: usamos promedio de % si existe, si no ds/dp
   let eff = 0;
   const hasPct = data.some(r => r["% SERVIS VS PPT"]!==undefined && r["% SERVIS VS PPT"]!=="");
   if(hasPct){
@@ -1053,10 +1198,7 @@ function upPPT(){
     setSem(pill, card, "bad");
   }
 
-  // Charts:
   const xMonths = monthSort(uniq(meses.map(cleanMonthName)));
-
-  // sum ppt y servis por mes
   const pptByM = xMonths.map(m => data.filter(r=>cleanMonthName(r["MES"])===cleanMonthName(m)).reduce((a,r)=>a+num(r["AVANCE PPT"]),0));
   const srvByM = xMonths.map(m => data.filter(r=>cleanMonthName(r["MES"])===cleanMonthName(m)).reduce((a,r)=>a+num(r["AVANCE SERVIS"]),0));
 
@@ -1065,13 +1207,11 @@ function upPPT(){
     { label:"Avance Servis", data:srvByM, backgroundColor:"rgba(25,195,125,.65)", borderRadius:10 }
   ], v=>v.toLocaleString("es-AR"));
 
-  // eficiencia por mes (promedio)
   const effByM = xMonths.map(m => {
     const rows = data.filter(r=>cleanMonthName(r["MES"])===cleanMonthName(m));
     if(!rows.length) return 0;
-    let e=0;
     if(hasPct){
-      e = rows.reduce((a,r)=>a+num(r["% SERVIS VS PPT"]),0)/rows.length;
+      let e = rows.reduce((a,r)=>a+num(r["% SERVIS VS PPT"]),0)/rows.length;
       if(e>0 && e<2) e*=100;
       return e;
     }
@@ -1100,7 +1240,7 @@ function upPlan(){
   if(!dbPlan.length) return;
 
   const suc = $("planSuc").value;
-  const kpi = $("planKpi").value;
+  const kpi = $("planKpi").value; // ya está en mayúsculas por normalizeDb
   let meses = vals("planMes");
   if(!meses.length) meses = uniq(dbPlan.map(r=>cleanMonthName(r["MES"])));
 
@@ -1109,7 +1249,7 @@ function upPlan(){
 
   const serie = xMonths.map(m => {
     const r = rows.find(x => cleanMonthName(x["MES"])===cleanMonthName(m));
-    return r ? num(r[U(kpi)] ?? r[kpi]) : 0;
+    return r ? num(r[kpi]) : 0;
   });
 
   makeBarChart("planKpi","chartPlanKpi", xMonths, [{
@@ -1117,9 +1257,16 @@ function upPlan(){
     data: serie,
     backgroundColor:"rgba(47,107,255,.70)",
     borderRadius:10
-  }]);
+  }], v=>v.toLocaleString("es-AR"));
 
-  // Top KPIs del “primer mes seleccionado”
+  const lastVal = serie.length ? serie[serie.length-1] : 0;
+  $("planKpiNow").textContent = (Number.isFinite(lastVal) ? lastVal.toLocaleString("es-AR") : "0");
+  $("planKpiNowSub").textContent = `KPI: ${kpi}`;
+  $("planSucNow").textContent = suc || "—";
+  $("planMonthsNow").textContent = xMonths.length.toString();
+  $("planRefNow").textContent = "—";
+
+  // Top KPIs del primer mes seleccionado
   const monthPick = xMonths[0] || "";
   const monthRow = dbPlan.find(r => r["SUCURSAL"]===suc && cleanMonthName(r["MES"])===cleanMonthName(monthPick)) || null;
   const tbody = $("planTopTable").querySelector("tbody");
@@ -1141,7 +1288,7 @@ function upPlan(){
 }
 
 /* =======================
-   Events
+   Events / Nav
    ======================= */
 function bindNav(){
   document.querySelectorAll(".navBtn").forEach(btn=>{
@@ -1170,9 +1317,34 @@ function bindNav(){
 }
 
 function bindFilters(){
-  ["facYear","facArea","facSuc","facMes"].forEach(id => $(id).addEventListener("change", upFac));
-  ["pptYear","pptSuc","pptMes"].forEach(id => $(id).addEventListener("change", upPPT));
-  ["planSuc","planKpi","planMes"].forEach(id => $(id).addEventListener("change", upPlan));
+  const upFacD = debounce(upFac, 120);
+  const upPptD = debounce(upPPT, 120);
+  const upPlanD = debounce(upPlan, 120);
+
+  ["facYear","facArea","facSuc","facMes"].forEach(id => $(id).addEventListener("change", upFacD));
+  ["pptYear","pptSuc","pptMes"].forEach(id => $(id).addEventListener("change", upPptD));
+  ["planSuc","planKpi","planMes"].forEach(id => $(id).addEventListener("change", upPlanD));
+}
+
+/* =======================
+   Auto Refresh
+   ======================= */
+function stopAuto(){
+  if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }
+}
+function startAuto(){
+  stopAuto();
+  if(!autoEnabled) return;
+  autoTimer = setInterval(()=>{
+    if(document.hidden) return;
+    syncAll();
+  }, CONFIG.AUTO_REFRESH_MIN * 60 * 1000);
+}
+
+function toggleAuto(){
+  autoEnabled = !autoEnabled;
+  setAutoUI();
+  startAuto();
 }
 
 /* =======================
@@ -1180,24 +1352,26 @@ function bindFilters(){
    ======================= */
 (function boot(){
   nowTick();
+  setAutoUI();
   bindNav();
   bindFilters();
+
   $("btnSync").addEventListener("click", syncAll);
   $("btnClear").addEventListener("click", clearCache);
+  $("btnAuto").addEventListener("click", toggleAuto);
+
+  document.addEventListener("visibilitychange", ()=>{
+    // cuando vuelve a la pestaña, refrescamos una vez
+    if(!document.hidden && autoEnabled){
+      syncAll();
+    }
+  });
 
   const ok = loadCache();
-  if(!ok) syncAll(); // primera vez
+  if(!ok) syncAll();
+
+  startAuto();
 })();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
