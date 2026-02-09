@@ -701,11 +701,10 @@ function makeLineChart(key, canvasId, labels, datasets, yFmt){
             callback: yFmt || (v => v)
           },
           grid:{ color:"rgba(255,255,255,.06)" }
-        }
       }
-    }
   });
 }
+
 
 function makeBarChart(key, canvasId, labels, datasets, yFmt){
   destroyChart(key);
@@ -1208,6 +1207,7 @@ function bindFilters(){
 </script>
 </body>
 </html>
+
 
 
 
